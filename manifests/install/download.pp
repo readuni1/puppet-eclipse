@@ -16,8 +16,13 @@ class eclipse::install::download (
 ) {
 
   include eclipse::params
+  $arch = $::architecture ? {
+    'amd64' => 'x86_64',
+    'i386'  => '',
+    default => 'x86_64'
+  }
 
-  $filename = "eclipse-${package}-${release_name}-${service_release}-linux-gtk-${::architecture}.tar.gz"
+  $filename = "eclipse-${package}-${release_name}-${service_release}-linux-gtk-${arch}.tar.gz"
   $url = "${mirror}/eclipse/technology/epp/downloads/release/${release_name}/${service_release}/${filename}"
 
   if $owner_group and $ensure == 'present' {
@@ -45,5 +50,12 @@ class eclipse::install::download (
     mode    => 644,
     require => Archive['eclipse']
   }
+
+  file { '/usr/local/bin/eclipse':
+    ensure  => 'link',
+    target  => "${eclipse::params::download_bin}",
+    require => Archive['eclipse']
+  }
+  
 
 }

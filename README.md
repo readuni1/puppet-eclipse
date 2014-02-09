@@ -32,11 +32,17 @@ Install a specific version (only for download method)
 
     class { 'eclipse':
       method  => 'download',
-      version => '4.3'
+      release_name => 'luna',
     }
 
 Install a plugin using packages
 
     eclipse::plugin { 'egit':
       method => 'package'
+    }
+
+Install a specific plugin using p2_director (geppetto)
+
+    class { 'eclipse::plugin::geppetto':
+      method => 'p2_director'
     }
