@@ -31,8 +31,9 @@ Install Eclipse with downloading it
 Install a specific version (only for download method)
 
     class { 'eclipse':
-      method  => 'download',
-      release_name => 'luna',
+      method          => 'download',
+      release_name    => 'kepler',
+      service_release => 'SR1'
     }
 
 Install a plugin using packages
@@ -41,8 +42,43 @@ Install a plugin using packages
       method => 'package'
     }
 
-Install a specific plugin using p2_director (geppetto)
+Install a plugin using *p2_director*
 
-    class { 'eclipse::plugin::geppetto':
-      method => 'p2_director'
+    eclipse::plugin { 'egit':
+      method => 'p2_director',
+      iu     => 'org.eclipse.egit.feature.group'
     }
+
+Install a third-party plugin using *p2_director*
+
+    eclipse::plugin { 'pdt':
+      method     => 'p2_director',
+      iu         => 'org.eclipse.php.feature.group',
+      repository => 'http://p2-dev.pdt-extensions.org/'
+    }
+
+## Available plugins
+
+- eclipse::plugin::ansi_console
+- eclipse::plugin::atlassian
+- eclipse::plugin::colortheme
+- eclipse::plugin::copyright_wizard
+- eclipse::plugin::egit
+- eclipse::plugin::geppetto
+- eclipse::plugin::logviewer
+- eclipse::plugin::mechanic
+- eclipse::plugin::mylyn
+- eclipse::plugin::pdt
+- eclipse::plugin::pdt::composer
+- eclipse::plugin::pdt::doctrine
+- eclipse::plugin::pdt::editors
+- eclipse::plugin::pdt::makegood
+- eclipse::plugin::pdt::symfony
+- eclipse::plugin::pdt::tools
+- eclipse::plugin::pdt::twig
+- eclipse::plugin::ruby
+- eclipse::plugin::shelled
+- eclipse::plugin::vrapper
+- eclipse::plugin::web
+- eclipse::set::helpers
+- eclipse::set::php
