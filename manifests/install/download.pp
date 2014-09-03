@@ -61,7 +61,7 @@ class eclipse::install::download (
   file { '/usr/local/bin/eclipse':
     ensure  => 'link',
     target  => "${eclipse::params::download_bin}",
-    require => Archive['eclipse']
+    require => Archive[$filename]
   }
   
 
