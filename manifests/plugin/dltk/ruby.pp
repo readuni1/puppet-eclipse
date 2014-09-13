@@ -14,7 +14,7 @@ class eclipse::plugin::dltk::ruby (
   $repository = 'http://download.eclipse.org/technology/dltk/updates-dev/5.1'
 
   eclipse::plugin { 'dltk-ruby':
-    iu         => 'org.eclipse.dltk.ruby',
+    iu         => 'org.eclipse.dltk.ruby.feature.group',
     method     => $method,
     repository => $repository
   }
