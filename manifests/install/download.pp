@@ -22,7 +22,13 @@ class eclipse::install::download (
     default => 'x86_64'
   }
 
-  $filename = "eclipse-${package}-${release_name}-${service_release}-linux-gtk-${::architecture}"
+  $archsuffix = $::architecture ? {
+    /i.86/           => '',
+    /(amd64|x86_64)/ => '-x86_64',
+    default          => "-${::architecture}"
+  }
+
+  $filename = "eclipse-${package}-${release_name}-${service_release}-linux-gtk${archsuffix}"
   $url = "${mirror}/eclipse/technology/epp/downloads/release/${release_name}/${service_release}/${filename}.tar.gz"
 
   if $owner_group and $ensure == 'present' {
