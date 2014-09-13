@@ -4,7 +4,7 @@
 #
 # Sample Usage:
 #
-#  include eclipse::plugin::dltk_ruby
+#  include eclipse::plugin::dltk::ruby
 #
 class eclipse::plugin::dltk::ruby (
   $method           = 'p2_director',
