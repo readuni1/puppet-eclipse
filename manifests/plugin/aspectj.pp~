@@ -6,7 +6,7 @@
 #
 #  include eclipse::plugin::aspectj
 #
-class eclipse::plugin::osgi (
+class eclipse::plugin::aspectj (
   $method           = 'package',
   $ensure           = present
 ) {
@@ -39,4 +39,5 @@ class eclipse::plugin::osgi (
     method     => $method,
     repository => "${repository},${eclipse::repository}"
   }
+
 }

@@ -6,7 +6,7 @@
 #
 #  include eclipse::plugin::aspectj
 #
-class eclipse::plugin::osgi (
+class eclipse::plugin::aspectj (
   $method           = 'package',
   $ensure           = present
 ) {
@@ -21,6 +21,18 @@ class eclipse::plugin::osgi (
     method     => $method,
     repository => "${repository},${eclipse::repository}"
   }
+  
+  eclipse::plugin { 'aspectj-development-tools':
+    iu         => 'org.eclipse.ajdt.feature.group',
+    method     => $method,
+    repository => "${repository},${eclipse::repository}"
+  }
+  
+  eclipse::plugin { 'cross-ref':
+    iu         => 'org.eclipse.contribution.xref.feature.group',
+    method     => $method,
+    repository => "${repository},${eclipse::repository}"
+  }
 
   eclipse::plugin { 'equinox-weaving-sdk':
     iu         => 'org.eclipse.equinox.weaving.sdk.feature.group',
@@ -30,6 +42,12 @@ class eclipse::plugin::osgi (
   
   eclipse::plugin { 'cross-ref-source':
     iu         => 'org.eclipse.contribution.xref.source.feature.group',
+    method     => $method,
+    repository => "${repository},${eclipse::repository}"
+  }
+  
+  eclipse::plugin { 'eclipse-weaving-service':
+    iu         => 'org.eclipse.contribution.weaving.feature.group',
     method     => $method,
     repository => "${repository},${eclipse::repository}"
   }
