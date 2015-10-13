@@ -12,15 +12,12 @@ class eclipse::install::download (
   $service_release = 'SR1',
   $mirror          = 'http://mirror.switch.ch/ftp/mirror',
   $owner_group     = undef,
-  $ensure          = present
+  $ensure          = present,
+  $url             = undef,
+  $filename        = undef
 ) {
 
   include eclipse::params
-  $arch = $::architecture ? {
-    'amd64' => 'x86_64',
-    'i386'  => '',
-    default => 'x86_64'
-  }
 
   $archsuffix = $::architecture ? {
     /i.86/           => '',
@@ -28,30 +25,35 @@ class eclipse::install::download (
     default          => "-${::architecture}"
   }
 
-  $filename = "eclipse-${package}-${release_name}-${service_release}-linux-gtk${archsuffix}"
-  $url = "${mirror}/eclipse/technology/epp/downloads/release/${release_name}/${service_release}/${filename}.tar.gz"
+  if $url == undef {
+    $internalFilename = "eclipse-${package}-${release_name}-${service_release}-linux-gtk${archsuffix}"
+    $internalUrl = "${mirror}/eclipse/technology/epp/downloads/release/${release_name}/${service_release}/${internalFilename}.tar.gz"
+  } else {
+    $internalFilename = $filename
+    $internalUrl = "${url}/${internalFilename}.tar.gz"
+  }
 
   if $owner_group and $ensure == 'present' {
     exec { 'eclipse ownership':
       command     => "chgrp -R '${owner_group}' '${eclipse::params::target_dir}/eclipse'",
       refreshonly => true,
-      subscribe   => Archive[$filename]
+      subscribe   => Archive[$internalFilename]
     }
     exec { 'eclipse group permissions':
       command     => "find '${eclipse::params::target_dir}/eclipse' -type d -exec chmod g+s {} \\;",
       refreshonly => true,
-      subscribe   => Archive[$filename]
+      subscribe   => Archive[$internalFilename]
     }
     exec { 'eclipse write permissions':
       command     => "chmod -R g+w '${eclipse::params::target_dir}/eclipse'",
       refreshonly => true,
-      subscribe   => Archive[$filename]
+      subscribe   => Archive[$internalFilename]
     }
   }
 
-  archive { $filename:
+  archive { $internalFilename:
     ensure   => $ensure,
-    url      => $url,
+    url      => $internalUrl,
     target   => $eclipse::params::target_dir,
     root_dir => 'eclipse',
     timeout  => 0,
@@ -61,14 +63,7 @@ class eclipse::install::download (
     ensure  => $ensure,
     content => template('eclipse/opt-eclipse.desktop.erb'),
     mode    => 644,
-    require => Archive[$filename]
+    require => Archive[$internalFilename]
   }
-
-  file { '/usr/local/bin/eclipse':
-    ensure  => 'link',
-    target  => "${eclipse::params::download_bin}",
-    require => Archive[$filename]
-  }
-  
 
 }

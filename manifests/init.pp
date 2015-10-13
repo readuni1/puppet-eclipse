@@ -12,7 +12,9 @@ class eclipse (
   $service_release = 'SR1',
   $method          = 'package',
   $owner_group     = undef,
-  $ensure          = present
+  $ensure          = present,
+  $url             = undef,
+  $filename        = undef
 ) {
 
   include eclipse::params
@@ -26,7 +28,9 @@ class eclipse (
         release_name    => $release_name,
         service_release => $service_release,
         owner_group     => $owner_group,
-        ensure          => $ensure
+        ensure          => $ensure,
+        url             => $url,
+        filename        => $filename
       }
       $bin = $eclipse::params::download_bin
     }
