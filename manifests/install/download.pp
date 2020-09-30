@@ -53,7 +53,7 @@ class eclipse::install::download (
 
   # per https://forge.puppet.com/puppet/archive
   include '::archive'
-  archive { $internalFilename":
+  archive { $internalFilename:
     ensure       => $ensure,
     source       => $internalUrl,
     path         => "/var/tmp/${internalFilename}.tar.gz",
