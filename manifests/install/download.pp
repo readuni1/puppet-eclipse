@@ -51,12 +51,15 @@ class eclipse::install::download (
     }
   }
 
-  archive { $internalFilename:
-    ensure   => $ensure,
-    url      => $internalUrl,
-    target   => $eclipse::params::target_dir,
-    root_dir => 'eclipse',
-    timeout  => 0,
+  # per https://forge.puppet.com/puppet/archive
+  include '::archive'
+  archive { "/var/tmp/source/${internalFilename}.tar.gz":
+    ensure       => $ensure,
+    source       => $internalUrl,
+    path         => "/var/tmp/source/${internalFilename}.tar.gz",
+    extract      => true,
+    extract_path => $eclipse::params::target_dir,
+    creates      => "${eclipse::params::target_dir}/eclipse",
   }
 
   file { '/usr/share/applications/opt-eclipse.desktop':
